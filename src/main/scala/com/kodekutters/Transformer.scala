@@ -35,7 +35,7 @@ class Transformer(converter: StixConverter) {
     * @param inFile  the input Stix file name must have extension .json
     * @param outFile the results output file
     */
-  def stixConvertion(inFile: String, outFile: String) = {
+  def stixConvertion(inFile: String, outFile: String): Unit = {
     // read a STIX bundle from a file
     val jsondoc = Source.fromFile(inFile).mkString
     // create a bundle object from it
@@ -51,7 +51,7 @@ class Transformer(converter: StixConverter) {
     * @param inFile  the input Stix zip file name
     * @param outFile the results output zip file
     */
-  def stixConvertionZip(inFile: String, outFile: String) = {
+  def stixConvertionZip(inFile: String, outFile: String): Unit = {
     val bundleMap = readStixBundleZip(inFile)
     // convert each bundle file to a converted (string) representation
     val graphmlMap = for ((fileName, Some(bundle)) <- bundleMap) yield fileName -> converter.convert(bundle)
@@ -62,7 +62,7 @@ class Transformer(converter: StixConverter) {
     * get a map of file names and bundles from the input zip file
     *
     * @param inFile the input zip file name
-    * @return a map of (zip_file_name_entry and bundles options)
+    * @return a map of (zip_file_name_entry and bundle options)
     */
   def readStixBundleZip(inFile: String): Map[String, Option[Bundle]] = {
     import scala.collection.JavaConverters._
@@ -95,7 +95,7 @@ class Transformer(converter: StixConverter) {
     * @param outFile    the output file to write the results to, if empty to System.out
     * @param graphmlMap the list of converted objects to write
     */
-  def writeToFile(outFile: String, graphmlMap: String) = {
+  def writeToFile(outFile: String, graphmlMap: String): Unit  = {
     val writer = if (outFile.isEmpty) new PrintWriter(System.out) else new PrintWriter(new File(outFile))
     try {
       writer.write(graphmlMap)
@@ -113,7 +113,7 @@ class Transformer(converter: StixConverter) {
     * @param outFile the output file to write the results to
     * @param theMap  the list of converted objects to write
     */
-  def writeToZipFile(outFile: String, theMap: Map[String, String]) = {
+  def writeToZipFile(outFile: String, theMap: Map[String, String]): Unit  = {
     try {
       // write a file for each converted bundle into the zip file
       if (outFile.nonEmpty)

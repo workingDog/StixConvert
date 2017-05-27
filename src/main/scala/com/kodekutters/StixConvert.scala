@@ -29,17 +29,17 @@ object StixConvert {
     if (args.isEmpty)
       println(usage)
     else {
-      val outFile: String = if (args.length == 3) args(2) else ""
       args(0) match {
-        case "--graphml" => doTransform(args(1), outFile, new Transformer(GraphMLConverter()))
-        case "--gexf" => doTransform(args(1), outFile, new Transformer(GexfConverter()))
+        case "--graphml" => doTransform(args, new Transformer(GraphMLConverter()))
+        case "--gexf" => doTransform(args, new Transformer(GexfConverter()))
         case x => println("unknown format: " + x + "\n"); println(usage)
       }
     }
   }
 
-  def doTransform(inName: String, outFile: String, transformer: Transformer) = {
-    inName.toLowerCase match {
+  def doTransform(args: Array[String], transformer: Transformer) = {
+    val outFile: String = if (args.length == 3) args(2) else ""
+    args(1).toLowerCase match {
       case inFile if inFile.endsWith(".json") => transformer.stixConvertion(inFile, outFile)
       case inFile if inFile.endsWith(".zip") => transformer.stixConvertionZip(inFile, outFile)
       case inFile => println("Error --> input file \"" + inFile + "\" must have extension .json or .zip")
