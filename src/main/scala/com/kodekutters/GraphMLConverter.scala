@@ -60,7 +60,7 @@ class GraphMLConverter extends StixConverter {
       if (e.isInstanceOf[Relationship]) {
       val b = e.asInstanceOf[Relationship]
       <edge directed="true" id={b.id.toString()} source={b.source_ref.toString()} target={b.target_ref.toString()}>
-        <data key="e1"><stix:type>{b.`type`}</stix:type></data>
+        <data key="e1"><stix:type>{b.relationship_type}</stix:type></data>
         <data key="e2"><stix:created>{b.created.time}</stix:created></data>
         <data key="e3"><stix:modified>{b.modified.time}</stix:modified></data>
         <data key="e4"><stix:description>{b.description.getOrElse("").toString}</stix:description></data>
@@ -74,7 +74,7 @@ class GraphMLConverter extends StixConverter {
         // do a self reference with the sighting_of_ref
         for(ref <- b.where_sighted_refs.getOrElse(List(b.sighting_of_ref))) yield {
           <edge directed="true" id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
-            <data key="e1"><stix:type>{b.`type`}</stix:type></data>
+            <data key="e1"><stix:type>"sighting"</stix:type></data>
             <data key="e2"><stix:created>{b.created.time}</stix:created></data>
             <data key="e3"><stix:modified>{b.modified.time}</stix:modified></data>
             <data key="e4"><stix:description>{b.description.getOrElse("").toString}</stix:description></data>

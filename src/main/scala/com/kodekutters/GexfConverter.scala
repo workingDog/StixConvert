@@ -65,7 +65,7 @@ class GexfConverter extends StixConverter {
           val b = e.asInstanceOf[Relationship]
           <edge id={b.id.toString()} source={b.source_ref.toString()} target={b.target_ref.toString()}>
             <attvalues>
-              <attvalue for="e1" value={b.`type`}/>
+              <attvalue for="e1" value={b.relationship_type}/>
               <attvalue for="e2" value={b.created.time}/>
               <attvalue for="e3" value={b.modified.time}/>
               <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
@@ -81,7 +81,7 @@ class GexfConverter extends StixConverter {
           for (ref <- b.where_sighted_refs.getOrElse(List(b.sighting_of_ref))) yield
             <edge id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
               <attvalues>
-                <attvalue for="e1" value={b.`type`}/>
+                <attvalue for="e1" value="sighting"/>
                 <attvalue for="e2" value={b.created.time}/>
                 <attvalue for="e3" value={b.modified.time}/>
                 <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>

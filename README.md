@@ -18,9 +18,9 @@ Currently the following Stix SDO properties are represented in GraphML and GEXF 
 
     type, created, modified, created_by_ref, revoked, confidence and name (when available)
 
-Similarly, the following Stix SRO properties are represented in GraphML and GEXF  edges:
+Similarly, the following Stix SRO properties are represented in GraphML and GEXF edges:
            
-    type, created, modified, description, revoked and confidence
+    relationship_type, created, modified, description, revoked and confidence
                
 ### References
  
