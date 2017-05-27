@@ -2,13 +2,14 @@
 
 This application **StixConvert**, converts STIX-2.1 json and zip files into a GraphML or GEXF representation. 
 
-[GraphML](http://graphml.graphdrawing.org/) is a common XML format for graphs, and 
-the Structured Threat Information Expression [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
-is a language for expressing cyber threat and observable information. Similarly, [GEXF](https://gephi.org/gexf/format/) is a format 
-used by the popular [Gephi](https://gephi.org/) graph visualization tool.
+The Structured Threat Information Expression [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+is a language for expressing cyber threat and observable information.
 
-This application uses the [ScalaStix library](https://github.com/workingDog/scalastix) 
-to convert Stix objects and relationships to GraphML or GEXF format. 
+[GraphML](http://graphml.graphdrawing.org/) is a common XML format for graphs and similarly [GEXF](https://gephi.org/gexf/format/) is 
+a format used by the popular [Gephi](https://gephi.org/) graph visualization tool.
+ 
+This application uses the [ScalaStix](https://github.com/workingDog/scalastix) library
+to convert Stix domain objects (SDO) and relationships (SRO) to GraphML and GEXF format. 
 
 The aim is to make Stix graph structures available to GraphML and GEXF visualisation tools.
  
