@@ -9,7 +9,7 @@ is a language for expressing cyber threat and observable information.
 a format used by the popular [Gephi](https://gephi.org/) graph visualization tool.
  
 This application uses the [ScalaStix](https://github.com/workingDog/scalastix) library
-to convert Stix domain objects (SDO) and relationships (SRO) to GraphML and GEXF format. 
+to convert Stix domain objects (SDO) and relationships (SRO) to GraphML and GEXF formats. 
 
 The aim is to make Stix graph structures available to GraphML and GEXF visualisation tools.
  
@@ -19,7 +19,7 @@ Currently the following Stix SDO properties are represented in GraphML and GEXF 
 
     type, created, modified, created_by_ref, revoked, confidence and name (when available)
 
-Similarly, the following Stix SRO properties are represented in GraphML and GEXF edges:
+In addition, the following Stix SRO properties are represented in GraphML and GEXF edges:
            
     relationship_type, created, modified, description, revoked and confidence
                
@@ -31,12 +31,12 @@ Similarly, the following Stix SRO properties are represented in GraphML and GEXF
 
 3) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
 
-4) [ScalaStix library](https://github.com/workingDog/scalastix)
+4) [ScalaStix](https://github.com/workingDog/scalastix)
 
 ### Dependencies
 
-Depends on the scala [ScalaStix library](https://github.com/workingDog/scalastix)
-(included in the "lib" directory) and the [scala-xml library](https://github.com/scala/scala-xml).
+Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library
+(included in the "lib" directory) and the [scala-xml](https://github.com/scala/scala-xml) library.
 
 Java 8 is also required.
 
