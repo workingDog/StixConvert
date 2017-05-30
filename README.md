@@ -15,7 +15,7 @@ The aim is to make Stix graph structures available to GraphML and GEXF visualisa
  
 ### Stix to GraphML and GEXF mapping
 
-Currently the following Stix SDO properties are represented in GraphML and GEXF nodes:
+Currently only a small number of Stix attributes are converted. The following Stix SDO properties are represented in GraphML and GEXF nodes:
 
     type, created, modified, created_by_ref, revoked, confidence and name (when available)
 
