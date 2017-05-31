@@ -59,7 +59,7 @@ Once you have the jar file, simply type at the prompt:
     or
     java -jar stixconvert-1.0.jar --gexf stix_file.json out_file.gexf
  
-where "--graphml" or"--gexf" determines the convertion format, "stix_file.json" is the Stix file containing a 
+where "--graphml" or"--gexf" determines the conversion format, "stix_file.json" is the Stix file containing a 
 bundle of Stix objects you want to convert, and "out_file.graphml" or "out_file.gexf" is the destination file 
 with the new format results. If the output file is absent, the output is directed to the console.
  
