@@ -27,36 +27,47 @@ class GexfConverter extends StixConverter {
     */
   def convert(bundle: Bundle): String = {
 
-    val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO] || obj.isInstanceOf[SDO2]))
+    val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO]))
       yield {
-        // name is in all SDO except ObservedData
-        if (stix.isInstanceOf[ObservedData]) {
-          val b = stix.asInstanceOf[ObservedData]
-          <node id={b.id.toString()} label="observed-data">
-            <attvalues>
-              <attvalue for="n1" value={b.`type`}/>
-              <attvalue for="n2" value={b.created.time}/>
-              <attvalue for="n3" value={b.modified.time}/>
-              <attvalue for="n4" value={b.created_by_ref.getOrElse("").toString}/>
-              <attvalue for="n5" value={b.revoked.getOrElse("").toString}/>
-              <attvalue for="n6" value={b.confidence.getOrElse("").toString}/>
+        val theDataName = stix match {
+          case stx if stx.isInstanceOf[ObservedData] =>
               <attvalue for="n7" value="observed-data"/>
-            </attvalues>
-          </node>
-        } else {
-          val b = stix.asInstanceOf[SDO]
-          <node id={b.id.toString()} label={b.name}>
-            <attvalues>
-              <attvalue for="n1" value={b.`type`}/>
-              <attvalue for="n2" value={b.created.time}/>
-              <attvalue for="n3" value={b.modified.time}/>
-              <attvalue for="n4" value={b.created_by_ref.getOrElse("").toString}/>
-              <attvalue for="n5" value={b.revoked.getOrElse("").toString}/>
-              <attvalue for="n6" value={b.confidence.getOrElse("").toString}/>
-              <attvalue for="n7" value={b.name}/>
-            </attvalues>
-          </node>
+          case stx if stx.isInstanceOf[Indicator] =>
+              <attvalue for="n7" value={stx.asInstanceOf[Indicator].name.getOrElse("")}/>
+          case stx if stx.isInstanceOf[AttackPattern] =>
+              <attvalue for="n7" value={stix.asInstanceOf[AttackPattern].name}/>
+          case stx if  stx.isInstanceOf[Identity] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Identity].name}/>
+          case stx if stx.isInstanceOf[Campaign] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Campaign].name}/>
+          case stx if stx.isInstanceOf[CourseOfAction] =>
+              <attvalue for="n7" value={stix.asInstanceOf[CourseOfAction].name}/>
+          case stx if stx.isInstanceOf[IntrusionSet] =>
+              <attvalue for="n7" value={stix.asInstanceOf[IntrusionSet].name}/>
+          case stx if stx.isInstanceOf[Malware] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Malware].name}/>
+          case stx if stx.isInstanceOf[Report] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Report].name}/>
+          case stx if stx.isInstanceOf[ThreatActor] =>
+              <attvalue for="n7" value={stix.asInstanceOf[ThreatActor].name}/>
+          case stx if stx.isInstanceOf[Vulnerability] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Vulnerability].name}/>
+          case stx if stx.isInstanceOf[Tool] =>
+              <attvalue for="n7" value={stix.asInstanceOf[Tool].name}/>
+          case _ => <attvalue for="n7" value=""/>
         }
+        val b = stix.asInstanceOf[SDO]
+        <node id={b.id.toString()}>
+          <attvalues>
+            <attvalue for="n1" value={b.`type`}/>
+            <attvalue for="n2" value={b.created.time}/>
+            <attvalue for="n3" value={b.modified.time}/>
+            <attvalue for="n4" value={b.created_by_ref.getOrElse("").toString}/>
+            <attvalue for="n5" value={b.revoked.getOrElse("").toString}/>
+            <attvalue for="n6" value={b.confidence.getOrElse("").toString}/>
+            {theDataName}
+          </attvalues>
+        </node>
       }
 
     val edgesXml = for (e <- bundle.objects.filter(_.isInstanceOf[SRO]))
@@ -115,8 +126,12 @@ class GexfConverter extends StixConverter {
           <attribute id="e6" title="confidence" type="integer"/>
           <attribute id="e7" title="count" type="integer"/>
         </attributes>
-        <nodes>{nodesXml}</nodes>
-        <edges>{edgesXml}</edges>
+        <nodes>
+          {nodesXml}
+        </nodes>
+        <edges>
+          {edgesXml}
+        </edges>
       </graph>
     </gexf>
 

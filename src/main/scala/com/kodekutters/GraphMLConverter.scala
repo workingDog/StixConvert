@@ -28,21 +28,35 @@ class GraphMLConverter extends StixConverter {
     */
   def convert(bundle: Bundle): String = {
 
-    val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO] || obj.isInstanceOf[SDO2]))
+    val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO]))
       yield {
-        // name is in all SDO except ObservedData
-        if (stix.isInstanceOf[ObservedData]) {
-          val b = stix.asInstanceOf[ObservedData]
-          <node id={b.id.toString()}>
-            <data key="n1"><stix:type>{b.`type`}</stix:type></data>
-            <data key="n2"><stix:created>{b.created.time}</stix:created></data>
-            <data key="n3"><stix:modified>{b.modified.time}</stix:modified></data>
-            <data key="n4"><stix:created_by_ref>{b.created_by_ref.getOrElse("").toString}</stix:created_by_ref></data>
-            <data key="n5"><stix:revoked>{b.revoked.getOrElse("").toString}</stix:revoked></data>
-            <data key="n6"><stix:confidence>{b.confidence.getOrElse("").toString}</stix:confidence></data>
-            <data key="n7"><stix:name>"observed-data"</stix:name></data>
-          </node>
-        } else {
+        val theDataName = stix match {
+          case stx if stx.isInstanceOf[ObservedData] =>
+            <data key="n7"><stix:name>observed-data</stix:name></data>
+          case stx if stx.isInstanceOf[Indicator] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Indicator].name.getOrElse("")}</stix:name></data>
+          case stx if stx.isInstanceOf[AttackPattern] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[AttackPattern].name}</stix:name></data>
+          case stx if  stx.isInstanceOf[Identity] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Identity].name}</stix:name></data>
+          case stx if stx.isInstanceOf[Campaign] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Campaign].name}</stix:name></data>
+          case stx if stx.isInstanceOf[CourseOfAction] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[CourseOfAction].name}</stix:name></data>
+          case stx if stx.isInstanceOf[IntrusionSet] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[IntrusionSet].name}</stix:name></data>
+          case stx if stx.isInstanceOf[Malware] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Malware].name}</stix:name></data>
+          case stx if stx.isInstanceOf[Report] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Report].name}</stix:name></data>
+          case stx if stx.isInstanceOf[ThreatActor] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[ThreatActor].name}</stix:name></data>
+          case stx if stx.isInstanceOf[Vulnerability] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Vulnerability].name}</stix:name></data>
+          case stx if stx.isInstanceOf[Tool] =>
+            <data key="n7"><stix:name>{stix.asInstanceOf[Tool].name}</stix:name></data>
+          case _ => <data key="n7"><stix:name></stix:name></data>
+        }
         val b = stix.asInstanceOf[SDO]
         <node id={b.id.toString()}>
           <data key="n1"><stix:type>{b.`type`}</stix:type></data>
@@ -51,9 +65,9 @@ class GraphMLConverter extends StixConverter {
           <data key="n4"><stix:created_by_ref>{b.created_by_ref.getOrElse("").toString}</stix:created_by_ref></data>
           <data key="n5"><stix:revoked>{b.revoked.getOrElse("").toString}</stix:revoked></data>
           <data key="n6"><stix:confidence>{b.confidence.getOrElse("").toString}</stix:confidence></data>
-          <data key="n7"><stix:name>{b.name}</stix:name></data>
+          {theDataName}
         </node>
-      }}
+      }
 
     val edgesXml = for (e <- bundle.objects.filter(_.isInstanceOf[SRO]))
       yield {
