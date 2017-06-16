@@ -16,8 +16,8 @@ The aim is to make Stix graph structures available to GraphML and GEXF visualisa
 ### Another tool
 [StixToNeoDB](https://github.com/workingDog/StixToNeoDB) in this repository,
 loads Stix objects into a [Neo4j](https://neo4j.com/) graph database which can then be exported into graphML, 
-Cypher statements, CSV and binary formats using  [export tools](https://github.com/jexp/neo4j-shell-tools). 
-  
+Cypher statements, CSV and binary formats using [export tools](https://github.com/jexp/neo4j-shell-tools). 
+These tools export the full set of Stix objects attributes.   
   
 ### Stix to GraphML and GEXF mapping
 
