@@ -13,9 +13,14 @@ to convert Stix domain objects (SDO) and relationships (SRO) to GraphML and GEXF
 
 The aim is to make Stix graph structures available to GraphML and GEXF visualisation tools.
  
+## Another tool
+[StixToNeoDB](https://github.com/workingDog/StixToNeoDB) in this repository,
+loads Stix objects into a [Neo4j](https://neo4j.com/) graph database which can then be exported into graphML, 
+Cypher statements, CSV and binary formats using  [export tools](https://github.com/jexp/neo4j-shell-tools). 
+  
 ### Stix to GraphML and GEXF mapping
 
-Currently only a small number of Stix attributes are converted. The following Stix SDO properties are represented in GraphML and GEXF nodes:
+With **StixConvert** only a small number of Stix attributes are converted. The following Stix SDO properties are represented in GraphML and GEXF nodes:
 
     type, created, modified, created_by_ref, revoked, confidence and name (when available)
 
