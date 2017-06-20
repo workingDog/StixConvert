@@ -87,12 +87,25 @@ class GexfConverter extends StixConverter {
         }
         else { // must be a Sighting
           val b = e.asInstanceOf[Sighting]
-          // create an edge for every where_sighted_refs, if none
-          // do a self reference with the sighting_of_ref
-          for (ref <- b.where_sighted_refs.getOrElse(List(b.sighting_of_ref))) yield
+          // create a sighting relation between the sighting_of_ref and itself
+          val sighting_of =
+            <edge id={b.id.toString()} source={b.sighting_of_ref.toString()} target={b.sighting_of_ref.toString()}>
+            <attvalues>
+              <attvalue for="e1" value="sighting_of"/>
+              <attvalue for="e2" value={b.created.time}/>
+              <attvalue for="e3" value={b.modified.time}/>
+              <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
+              <attvalue for="e5" value={b.revoked.getOrElse("").toString}/>
+              <attvalue for="e6" value={b.confidence.getOrElse("").toString}/>
+              <attvalue for="e7" value={b.count.getOrElse("").toString}/>
+            </attvalues>
+          </edge>
+          // create an edge for every where_sighted_refs
+          val was_sighted_by =
+            for (ref <- b.where_sighted_refs.getOrElse(List.empty)) yield
             <edge id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
               <attvalues>
-                <attvalue for="e1" value="sighting"/>
+                <attvalue for="e1" value="was_sighted_by"/>
                 <attvalue for="e2" value={b.created.time}/>
                 <attvalue for="e3" value={b.modified.time}/>
                 <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
@@ -101,6 +114,8 @@ class GexfConverter extends StixConverter {
                 <attvalue for="e7" value={b.count.getOrElse("").toString}/>
               </attvalues>
             </edge>
+
+          was_sighted_by :: List(sighting_of)
         }
       }
 

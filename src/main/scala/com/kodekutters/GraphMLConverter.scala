@@ -84,11 +84,21 @@ class GraphMLConverter extends StixConverter {
       }
      else {  // must be a Sighting
         val b = e.asInstanceOf[Sighting]
-        // create an edge for every where_sighted_refs, if none
-        // do a self reference with the sighting_of_ref
-        for(ref <- b.where_sighted_refs.getOrElse(List(b.sighting_of_ref))) yield {
+        // create a sighting relation between the sighting_of_ref and itself
+        val sighting_of =
+          <edge directed="true" id={b.id.toString()} source={b.sighting_of_ref.toString} target={b.sighting_of_ref.toString()}>
+          <data key="e1"><stix:type>sighting_of</stix:type></data>
+          <data key="e2"><stix:created>{b.created.time}</stix:created></data>
+          <data key="e3"><stix:modified>{b.modified.time}</stix:modified></data>
+          <data key="e4"><stix:description>{b.description.getOrElse("").toString}</stix:description></data>
+          <data key="e5"><stix:revoked>{b.revoked.getOrElse("").toString}</stix:revoked></data>
+          <data key="e6"><stix:confidence>{b.confidence.getOrElse("").toString}</stix:confidence></data>
+          <data key="e7"><stix:count>{b.count.getOrElse("")}</stix:count></data>
+        </edge>
+        // create an edge for every where_sighted_refs
+        val was_sighted_by = for(ref <- b.where_sighted_refs.getOrElse(List.empty)) yield
           <edge directed="true" id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
-            <data key="e1"><stix:type>"sighting"</stix:type></data>
+            <data key="e1"><stix:type>was_sighted_by</stix:type></data>
             <data key="e2"><stix:created>{b.created.time}</stix:created></data>
             <data key="e3"><stix:modified>{b.modified.time}</stix:modified></data>
             <data key="e4"><stix:description>{b.description.getOrElse("").toString}</stix:description></data>
@@ -96,7 +106,8 @@ class GraphMLConverter extends StixConverter {
             <data key="e6"><stix:confidence>{b.confidence.getOrElse("").toString}</stix:confidence></data>
             <data key="e7"><stix:count>{b.count.getOrElse("")}</stix:count></data>
           </edge>
-        }
+
+        was_sighted_by :: List(sighting_of)
        }
       }
 
