@@ -60,15 +60,16 @@ For convenience a **stixconvert-1.1.jar** file is in the *distrib* directory rea
 
 Once you have the jar file, simply type at the prompt:
  
-    java -jar stixconvert-1.1.jar --graphml stix_file.json out_file.graphml
+    java -jar stixconvert-1.1.jar --graphml input_file out_file
     or
-    java -jar stixconvert-1.1.jar --gexf stix_file.json out_file.gexf
+    java -jar stixconvert-1.1.jar --gexf input_file out_file
  
-where "--graphml" or"--gexf" determines the conversion format, "stix_file.json" is the Stix file containing a 
-bundle of Stix objects you want to convert, and "out_file.graphml" or "out_file.gexf" is the destination file 
+where "--graphml" or"--gexf" determines the conversion format. "input_file" is a file containing the 
+Stix data you want to convert, and "out_file" is the destination file 
 with the new format results. If the output file is absent, the output is directed to the console.
  
-If the input file is a zip file with one or more files containing bundles of Stix objects,
+The input file should have the extension ".json" (containing a single bundle) or ".zip".
+ If the input file is a zip file with one or more files containing bundles of Stix objects,
 the output file will also be a zip file with one or more files of GraphML or GEXF format results.
  
 Note: on macOS, when using "Compress" from the "Finder" menu, the resulting zip file may contain 

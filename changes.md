@@ -10,5 +10,3 @@ Change Log
 * update to latest scalastix-0.7, hence changed circe dependency to play.json
 * compatibility with STIX-2.0
 * code cleaning
-
-
