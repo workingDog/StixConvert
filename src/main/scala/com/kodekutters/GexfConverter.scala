@@ -3,9 +3,9 @@ package com.kodekutters
 import com.kodekutters.stix._
 
 /**
-  * converts Stix-2.1 objects and relationships into Gexf format
+  * converts Stix-2.0 objects and relationships into Gexf format
   *
-  * @author R. Wathelet May 2017
+  * @author R. Wathelet May 2017, revised Jan 2018
   *
   *         ref: https://github.com/workingDog/scalastix
   *         ref: https://gephi.org/gexf/format/
@@ -15,7 +15,7 @@ object GexfConverter {
 }
 
 /**
-  * converts Stix-2.1 objects (nodes) and relationships (edges) into Gexf format
+  * converts Stix-2.0 objects (nodes) and relationships (edges) into Gexf format
   */
 class GexfConverter extends StixConverter {
 
@@ -30,30 +30,18 @@ class GexfConverter extends StixConverter {
     val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO]))
       yield {
         val theDataName = stix match {
-          case stx if stx.isInstanceOf[ObservedData] =>
-              <attvalue for="n7" value="observed-data"/>
-          case stx if stx.isInstanceOf[Indicator] =>
-              <attvalue for="n7" value={stx.asInstanceOf[Indicator].name.getOrElse("")}/>
-          case stx if stx.isInstanceOf[AttackPattern] =>
-              <attvalue for="n7" value={stix.asInstanceOf[AttackPattern].name}/>
-          case stx if  stx.isInstanceOf[Identity] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Identity].name}/>
-          case stx if stx.isInstanceOf[Campaign] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Campaign].name}/>
-          case stx if stx.isInstanceOf[CourseOfAction] =>
-              <attvalue for="n7" value={stix.asInstanceOf[CourseOfAction].name}/>
-          case stx if stx.isInstanceOf[IntrusionSet] =>
-              <attvalue for="n7" value={stix.asInstanceOf[IntrusionSet].name}/>
-          case stx if stx.isInstanceOf[Malware] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Malware].name}/>
-          case stx if stx.isInstanceOf[Report] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Report].name}/>
-          case stx if stx.isInstanceOf[ThreatActor] =>
-              <attvalue for="n7" value={stix.asInstanceOf[ThreatActor].name}/>
-          case stx if stx.isInstanceOf[Vulnerability] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Vulnerability].name}/>
-          case stx if stx.isInstanceOf[Tool] =>
-              <attvalue for="n7" value={stix.asInstanceOf[Tool].name}/>
+          case stx: ObservedData => <attvalue for="n7" value="observed-data"/>
+          case stx: Indicator => <attvalue for="n7" value={stx.name.getOrElse("")}/>
+          case stx: AttackPattern => <attvalue for="n7" value={stx.name}/>
+          case stx: Identity => <attvalue for="n7" value={stx.name}/>
+          case stx: Campaign => <attvalue for="n7" value={stx.name}/>
+          case stx: CourseOfAction => <attvalue for="n7" value={stx.name}/>
+          case stx: IntrusionSet => <attvalue for="n7" value={stx.name}/>
+          case stx: Malware => <attvalue for="n7" value={stx.name}/>
+          case stx: Report => <attvalue for="n7" value={stx.name}/>
+          case stx: ThreatActor => <attvalue for="n7" value={stx.name}/>
+          case stx: Vulnerability => <attvalue for="n7" value={stx.name}/>
+          case stx: Tool => <attvalue for="n7" value={stx.name}/>
           case _ => <attvalue for="n7" value=""/>
         }
         val b = stix.asInstanceOf[SDO]
@@ -64,8 +52,6 @@ class GexfConverter extends StixConverter {
             <attvalue for="n3" value={b.modified.time}/>
             <attvalue for="n4" value={b.created_by_ref.getOrElse("").toString}/>
             <attvalue for="n5" value={b.revoked.getOrElse("").toString}/>
-            <attvalue for="n6" value={b.confidence.getOrElse("").toString}/>
-            {theDataName}
           </attvalues>
         </node>
       }
@@ -81,7 +67,6 @@ class GexfConverter extends StixConverter {
               <attvalue for="e3" value={b.modified.time}/>
               <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
               <attvalue for="e5" value={b.revoked.getOrElse("").toString}/>
-              <attvalue for="e6" value={b.confidence.getOrElse("").toString}/>
             </attvalues>
           </edge>
         }
@@ -90,30 +75,28 @@ class GexfConverter extends StixConverter {
           // create a sighting relation between the sighting_of_ref and itself
           val sighting_of =
             <edge id={b.id.toString()} source={b.sighting_of_ref.toString()} target={b.sighting_of_ref.toString()}>
-            <attvalues>
-              <attvalue for="e1" value="sighting_of"/>
-              <attvalue for="e2" value={b.created.time}/>
-              <attvalue for="e3" value={b.modified.time}/>
-              <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
-              <attvalue for="e5" value={b.revoked.getOrElse("").toString}/>
-              <attvalue for="e6" value={b.confidence.getOrElse("").toString}/>
-              <attvalue for="e7" value={b.count.getOrElse("").toString}/>
-            </attvalues>
-          </edge>
-          // create an edge for every where_sighted_refs
-          val was_sighted_by =
-            for (ref <- b.where_sighted_refs.getOrElse(List.empty)) yield
-            <edge id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
               <attvalues>
-                <attvalue for="e1" value="was_sighted_by"/>
+                <attvalue for="e1" value="sighting_of"/>
                 <attvalue for="e2" value={b.created.time}/>
                 <attvalue for="e3" value={b.modified.time}/>
                 <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
                 <attvalue for="e5" value={b.revoked.getOrElse("").toString}/>
-                <attvalue for="e6" value={b.confidence.getOrElse("").toString}/>
                 <attvalue for="e7" value={b.count.getOrElse("").toString}/>
               </attvalues>
             </edge>
+          // create an edge for every where_sighted_refs
+          val was_sighted_by =
+            for (ref <- b.where_sighted_refs.getOrElse(List.empty)) yield
+              <edge id={b.id.toString()} source={ref.toString} target={b.sighting_of_ref.toString()}>
+                <attvalues>
+                  <attvalue for="e1" value="was_sighted_by"/>
+                  <attvalue for="e2" value={b.created.time}/>
+                  <attvalue for="e3" value={b.modified.time}/>
+                  <attvalue for="e4" value={b.created_by_ref.getOrElse("").toString}/>
+                  <attvalue for="e5" value={b.revoked.getOrElse("").toString}/>
+                  <attvalue for="e7" value={b.count.getOrElse("").toString}/>
+                </attvalues>
+              </edge>
 
           was_sighted_by :: List(sighting_of)
         }
@@ -129,7 +112,6 @@ class GexfConverter extends StixConverter {
           <attribute id="n3" title="modified" type="string"/>
           <attribute id="n4" title="created_by_ref" type="string"/>
           <attribute id="n5" title="revoked" type="boolean"/>
-          <attribute id="n6" title="confidence" type="integer"/>
           <attribute id="n7" title="name" type="string"/>
         </attributes>
         <attributes class="edge">
@@ -138,7 +120,6 @@ class GexfConverter extends StixConverter {
           <attribute id="e3" title="modified" type="string"/>
           <attribute id="e4" title="created_by_ref" type="string"/>
           <attribute id="e5" title="revoked" type="boolean"/>
-          <attribute id="e6" title="confidence" type="integer"/>
           <attribute id="e7" title="count" type="integer"/>
         </attributes>
         <nodes>

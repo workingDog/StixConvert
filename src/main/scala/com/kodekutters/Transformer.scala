@@ -5,8 +5,7 @@ import java.nio.file.{Files, Path, Paths}
 import java.util.zip.{ZipEntry, ZipOutputStream}
 
 import com.kodekutters.stix.Bundle
-import io.circe.generic.auto._
-import io.circe.parser.decode
+import play.api.libs.json.Json
 
 import scala.io.Source
 import scala.language.implicitConversions
@@ -18,6 +17,7 @@ import scala.language.postfixOps
   */
 trait StixConverter {
   def convert(bundle: Bundle): String
+
   // the output file extension to use (include the leading ".")
   val outputExt: String
 }
@@ -30,6 +30,20 @@ trait StixConverter {
 class Transformer(converter: StixConverter) {
 
   /**
+    * reads an input Stix file and write the converted results to an output file with the chosen extension
+    *
+    * @param file the input Stix file name
+    * @param ext the output file name extension, eg: ".gexf"
+    */
+  def stixFileConvertion(file: File, ext: String): Unit = {
+    if (file.getName.toLowerCase.endsWith(".zip")) {
+      stixConvertionZip(file.getCanonicalPath, file.getCanonicalPath.dropRight(4) + ext + ".zip")
+    } else {
+      stixConvertion(file.getCanonicalPath, file.getCanonicalPath + ext)
+    }
+  }
+
+  /**
     * convert the input Stix file and write the converted results to the output file
     *
     * @param inFile  the input Stix file name must have extension .json
@@ -39,10 +53,14 @@ class Transformer(converter: StixConverter) {
     // read a STIX bundle from a file
     val jsondoc = Source.fromFile(inFile).mkString
     // create a bundle object from it
-    decode[Bundle](jsondoc) match {
-      case Left(failure) => println("\n-----> ERROR reading bundle in file: " + inFile); None
-      case Right(bundle) => writeToFile(outFile, converter.convert(bundle))
+    Json.fromJson[Bundle](Json.parse(jsondoc)).asOpt match {
+      case None => println("\n-----> ERROR reading bundle in file: " + inFile); None
+      case Some(bundle) => writeToFile(outFile, converter.convert(bundle))
     }
+  }
+
+  def convertToFile(file: File, bundle: Bundle) = {
+    writeToFile(file.getCanonicalPath, converter.convert(bundle))
   }
 
   /**
@@ -83,9 +101,9 @@ class Transformer(converter: StixConverter) {
     // read a STIX bundle from the InputStream
     val jsondoc = Source.fromInputStream(source).mkString
     // create a bundle object from it
-    decode[Bundle](jsondoc) match {
-      case Left(failure) => println("-----> ERROR invalid bundle JSON in zip file: \n"); None
-      case Right(bundle) => Option(bundle)
+    Json.fromJson[Bundle](Json.parse(jsondoc)).asOpt match {
+      case None => println("-----> ERROR invalid bundle JSON in zip file: \n"); None
+      case Some(bundle) => Option(bundle)
     }
   }
 
@@ -95,7 +113,7 @@ class Transformer(converter: StixConverter) {
     * @param outFile    the output file to write the results to, if empty to System.out
     * @param graphmlMap the list of converted objects to write
     */
-  def writeToFile(outFile: String, graphmlMap: String): Unit  = {
+  def writeToFile(outFile: String, graphmlMap: String): Unit = {
     val writer = if (outFile.isEmpty) new PrintWriter(System.out) else new PrintWriter(new File(outFile))
     try {
       writer.write(graphmlMap)
@@ -113,7 +131,7 @@ class Transformer(converter: StixConverter) {
     * @param outFile the output file to write the results to
     * @param theMap  the list of converted objects to write
     */
-  def writeToZipFile(outFile: String, theMap: Map[String, String]): Unit  = {
+  def writeToZipFile(outFile: String, theMap: Map[String, String]): Unit = {
     try {
       // write a file for each converted bundle into the zip file
       if (outFile.nonEmpty)

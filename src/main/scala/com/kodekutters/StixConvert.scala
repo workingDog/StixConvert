@@ -8,7 +8,7 @@ import scala.language.postfixOps
   * a Stix zip file containing one or more of bundle files,
   * into either GraphML or GEXF format.
   *
-  * @author R. Wathelet May 2017
+  * @author R. Wathelet May 2017, revised Jan 2018
   *
   *         ref: https://github.com/workingDog/scalastix
   */
@@ -16,9 +16,9 @@ object StixConvert {
 
   val usage =
     """Usage:
-       java -jar stixconvert-1.0.jar --graphml stix_file.json out_file.graphml
+       java -jar stixconvert-1.1.jar --graphml stix_file.json out_file.graphml
       or
-       java -jar stixconvert-1.0.jar --gexf stix_file.json out_file.gexf """.stripMargin
+       java -jar stixconvert-1.1.jar --gexf stix_file.json out_file.gexf """.stripMargin
 
   /**
     * converts a Stix json file containing a STIX bundle, or

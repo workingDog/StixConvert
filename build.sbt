@@ -4,13 +4,13 @@ name := "stixconvert"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.4"
 
-crossScalaVersions := Seq("2.12.2")
+crossScalaVersions := Seq("2.12.4")
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
-//  "com.github.workingDog" %% "scalastix" % "1.0"
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
+  "com.github.workingDog" %% "scalastix" % "0.7"
 )
 
 homepage := Some(url("https://github.com/workingDog/StixConvert"))
@@ -21,4 +21,4 @@ mainClass in(Compile, run) := Some("com.kodekutters.StixConvert")
 
 mainClass in assembly := Some("com.kodekutters.StixConvert")
 
-assemblyJarName in assembly := "stixconvert-1.0.jar"
+assemblyJarName in assembly := "stixconvert-1.1.jar"

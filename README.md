@@ -1,8 +1,8 @@
-## Convert STIX-2.1 to GraphML or GEXF format 
+## Convert STIX-2.0 to GraphML or GEXF format 
 
-This application **StixConvert**, converts STIX-2.1 json and zip files into a GraphML or GEXF representation. 
+This application **StixConvert**, converts STIX-2.0 json and zip files into a GraphML or GEXF representation. 
 
-The Structured Threat Information Expression [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+The Structured Threat Information Expression [STIX-2.0](https://oasis-open.github.io/cti-documentation/stix/intro) 
 is a language for expressing cyber threat and observable information.
 
 [GraphML](http://graphml.graphdrawing.org/) is a common XML format for graphs and similarly [GEXF](https://gephi.org/gexf/format/) is 
@@ -23,11 +23,11 @@ These tools export the full set of Stix objects attributes.
 
 With **StixConvert** only a small number of Stix attributes are converted. The following Stix SDO properties are represented in GraphML and GEXF nodes:
 
-    type, created, modified, created_by_ref, revoked, confidence and name (when available)
+    type, created, modified, created_by_ref, revoked and name (when available)
 
 In addition, the following Stix SRO properties are represented in GraphML and GEXF edges:
            
-    relationship_type, created, modified, description, revoked and confidence
+    relationship_type, created, modified, description and revoked 
                
 ### References
  
@@ -35,14 +35,13 @@ In addition, the following Stix SRO properties are represented in GraphML and GE
 
 2) [GEXF](https://gephi.org/gexf/format/)
 
-3) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+3) [STIX-2.0](https://oasis-open.github.io/cti-documentation/stix/intro) 
 
 4) [ScalaStix](https://github.com/workingDog/scalastix)
 
 ### Dependencies
 
-Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library
-(included in the "lib" directory) and the [scala-xml](https://github.com/scala/scala-xml) library.
+Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library and the [scala-xml](https://github.com/scala/scala-xml) library.
 
 Java 8 is also required.
 
@@ -53,17 +52,17 @@ To assemble the application and all its dependencies into a single jar file type
 
     sbt assembly
 
-This will produce "stixconvert-1.0.jar" in the "./target/scala-2.12" directory.
+This will produce "stixconvert-1.1.jar" in the "./target/scala-2.12" directory.
 
-For convenience a **"stixconvert-1.0.jar"** file is in the "distrib" directory.
+For convenience a **stixconvert-1.1.jar** file is in the *distrib* directory ready for use.
 
 ### Usage
 
 Once you have the jar file, simply type at the prompt:
  
-    java -jar stixconvert-1.0.jar --graphml stix_file.json out_file.graphml
+    java -jar stixconvert-1.1.jar --graphml stix_file.json out_file.graphml
     or
-    java -jar stixconvert-1.0.jar --gexf stix_file.json out_file.gexf
+    java -jar stixconvert-1.1.jar --gexf stix_file.json out_file.gexf
  
 where "--graphml" or"--gexf" determines the conversion format, "stix_file.json" is the Stix file containing a 
 bundle of Stix objects you want to convert, and "out_file.graphml" or "out_file.gexf" is the destination file 
@@ -81,6 +80,6 @@ Note: on macOS, when using "Compress" from the "Finder" menu, the resulting zip 
 
 not fully tested.
 
-Using Scala 2.12, Java 8 and SBT-0.13.15.
+Using Scala 2.12, Java 8 and SBT-1.0.3.
 
 
