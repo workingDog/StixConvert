@@ -32,19 +32,19 @@ class GraphMLConverter extends StixConverter {
     val nodesXml = for (stix <- bundle.objects.filter(obj => obj.isInstanceOf[SDO]))
       yield {
         val theDataName = stix match {
-          case stx: ObservedData => <data key="n7"><stix:name>observed-data</stix:name></data>
-          case stx: Indicator => <data key="n7"><stix:name>{stx.name.getOrElse("")}</stix:name></data>
-          case stx: AttackPattern => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Identity => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Campaign => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: CourseOfAction => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: IntrusionSet => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Malware => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Report => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: ThreatActor => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Vulnerability => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case stx: Tool => <data key="n7"><stix:name>{stx.name}</stix:name></data>
-          case _ => <data key="n7"><stix:name></stix:name></data>
+          case stx: ObservedData => <data key="n6"><stix:name>observed-data</stix:name></data>
+          case stx: Indicator => <data key="n6"><stix:name>{stx.name.getOrElse("")}</stix:name></data>
+          case stx: AttackPattern => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Identity => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Campaign => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: CourseOfAction => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: IntrusionSet => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Malware => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Report => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: ThreatActor => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Vulnerability => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case stx: Tool => <data key="n6"><stix:name>{stx.name}</stix:name></data>
+          case _ => <data key="n6"><stix:name></stix:name></data>
         }
         val b = stix.asInstanceOf[SDO]
         <node id={b.id.toString()}>
