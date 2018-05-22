@@ -1,8 +1,9 @@
 Change Log
 ==========
 
-## changes in 1.2-SNAPSHOT
+## changes in 1.2
 
+* update scala, sbt
 
 ## changes in 1.1
 

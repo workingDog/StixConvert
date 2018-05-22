@@ -4,9 +4,9 @@ name := "stixconvert"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 
-crossScalaVersions := Seq("2.12.4")
+crossScalaVersions := Seq("2.12.6")
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
@@ -21,4 +21,4 @@ mainClass in(Compile, run) := Some("com.kodekutters.StixConvert")
 
 mainClass in assembly := Some("com.kodekutters.StixConvert")
 
-assemblyJarName in assembly := "stixconvert-1.1.jar"
+assemblyJarName in assembly := "stixconvert-" + version.value + ".jar"

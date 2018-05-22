@@ -16,9 +16,9 @@ object StixConvert {
 
   val usage =
     """Usage:
-       java -jar stixconvert-1.1.jar --graphml input_file.json out_file.graphml
+       java -jar stixconvert-1.2.jar --graphml input_file.json out_file.graphml
       or
-       java -jar stixconvert-1.1.jar --gexf input_file.json out_file.gexf """.stripMargin
+       java -jar stixconvert-1.2.jar --gexf input_file.json out_file.gexf """.stripMargin
 
   /**
     * converts a Stix json file containing a STIX bundle, or
