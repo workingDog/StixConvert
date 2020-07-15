@@ -36,17 +36,17 @@ To assemble the application and all its dependencies into a single jar file type
 
     sbt assembly
 
-This will produce "stixconvert-1.2.jar" in the "./target/scala-2.12" directory.
+This will produce "stixconvert-1.3.jar" in the "./target/scala-2.13" directory.
 
-For convenience a **stixconvert-1.2.jar** file is in the *distrib* directory ready for use.
+For convenience a **stixconvert-1.3.jar** file is in the *distrib* directory ready for use.
 
 ### Usage
 
 Once you have the jar file, simply type at the prompt:
  
-    java -jar stixconvert-1.2.jar --graphml input_file out_file
+    java -jar stixconvert-1.3.jar --graphml input_file out_file
     or
-    java -jar stixconvert-1.2.jar --gexf input_file out_file
+    java -jar stixconvert-1.3.jar --gexf input_file out_file
  
 where "--graphml" or"--gexf" determines the conversion format. "input_file" is a file containing the 
 Stix data you want to convert, and "out_file" is the destination file 
@@ -76,12 +76,12 @@ Note: on macOS, when using "Compress" from the "Finder" menu, the resulting zip 
 
 Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library and the [scala-xml](https://github.com/scala/scala-xml) library.
 
-Java 8 is also required.
+Java 11 is also required.
 
 ### Status
 
 not fully tested.
 
-Using Scala 2.12, Java 8 and SBT-1.1.5.
+Using Scala 2.13.3, Java 11 and SBT-1.3.13
 
 

@@ -4,14 +4,26 @@ name := "stixconvert"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.12.6"
-
-crossScalaVersions := Seq("2.12.6")
+scalaVersion := "2.13.3"
 
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
-  "com.github.workingDog" %% "scalastix" % "0.7"
+  "org.scala-lang.modules" %% "scala-xml" % "2.0.0-M1",
+  "com.github.workingDog" %% "scalastix" % "1.1"
 )
+
+test in assembly := {}
+
+assemblyMergeStrategy in assembly := {
+  case "module-info.class" => MergeStrategy.discard
+  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".rsa" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last endsWith "LICENSES.txt" => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
 
 homepage := Some(url("https://github.com/workingDog/StixConvert"))
 

@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+## changes in 1.3
+
+* update scalastix-1.1, scala-2.13.3, sbt-1.3.13
+
 ## changes in 1.2
 
 * update scala, sbt
